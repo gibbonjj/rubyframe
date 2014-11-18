@@ -3,11 +3,13 @@ require 'socket'
 server = TCPServer.open('localhost', 2000)
 puts "HTTP Server ready to accept requests!"
 
+
 loop do
   connection = server.accept
   puts "Opening a connection for request:"
   while message_line = connection.gets
     puts message_line
+    path = message_line.split(" ")[1]
     break if message_line.chomp == ""
   end
   puts "Sending response..."
@@ -16,7 +18,7 @@ loop do
   connection.puts "Content-Type: text/html"
   connection.puts "Server: My Http Server"
   connection.puts
-  connection.puts "Hi there, greetings from the server!"
+  connection.puts File.read("goodbye.rb")
   connection.close
   puts "Response sent and connection closed."
 end
